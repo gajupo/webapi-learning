@@ -25,10 +25,9 @@ namespace webapi_learning.Controller
         [HttpGet]
         [RequiredClaimAttribute("read", "true")]
         [Shirt_ValidatedPagedImputParamsAttribute]
-        public async Task<IActionResult> Shirts ([FromQuery]int pageNumber = 1, [FromQuery]int pageSize = 10)
+        public async Task<IActionResult> ShirtsPaged ([FromQuery]int pageNumber = 1, [FromQuery]int pageSize = 10)
         {
             var (shirts, totalCount) = await _shirtRepository.PagedGetShirts(pageNumber, pageSize);
-
             return Ok(shirts.ToPagedResult(pageNumber, pageSize, totalCount));
 
         }

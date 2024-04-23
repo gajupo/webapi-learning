@@ -68,6 +68,7 @@ namespace webapi_learning.Models.Repositories
             int totalCount = await _dbContext.Shirts.CountAsync();
             var shirts = await _dbContext.Shirts.Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .OrderBy(s => s.Id) 
                 .ToListAsync();
 
             return(shirts, totalCount);
