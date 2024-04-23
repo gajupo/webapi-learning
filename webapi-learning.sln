@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapi-learning", "webapi-learning.csproj", "{F79243F2-8908-4BC6-B9D3-E6E50D27BE18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F79243F2-8908-4BC6-B9D3-E6E50D27BE18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F79243F2-8908-4BC6-B9D3-E6E50D27BE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F79243F2-8908-4BC6-B9D3-E6E50D27BE18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F79243F2-8908-4BC6-B9D3-E6E50D27BE18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BFFBC92-D584-4ED4-9AB3-641259789EDD}
+	EndGlobalSection
+EndGlobal
