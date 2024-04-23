@@ -9,20 +9,23 @@ namespace webapi_learning.Filters
         {
             base.OnActionExecuting(context);
 
-            var pageNumber = context.ActionArguments["pageNumber"] as int?;
-            var pageSize = context.ActionArguments["pageSize"] as int?;
-
-            if (pageNumber == null || pageNumber <= 0 || pageSize == null || pageSize <= 0)
+            if(context.ActionArguments.TryGetValue("pageNumber", out var _pageNumber) && context.ActionArguments.TryGetValue("pageSize", out var _pageSize))
             {
-                context.ModelState.AddModelError("Shirt", "Page Number and Page Size must be grather than 0 if present");
-                var problemDetails = new ValidationProblemDetails(context.ModelState)
+                var pageNumber = _pageNumber as int?;
+                var pageSize = _pageSize as int?;
+
+                if (pageNumber == null || pageNumber <= 0 || pageSize == null || pageSize <= 0)
                 {
-                    Status = StatusCodes.Status400BadRequest,
-                };
+                    context.ModelState.AddModelError("Shirt", "Page Number and Page Size must be grather than 0 if present");
+                    var problemDetails = new ValidationProblemDetails(context.ModelState)
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                    };
 
-                context.Result = new BadRequestObjectResult(problemDetails);
+                    context.Result = new BadRequestObjectResult(problemDetails);
+                }
+
             }
-
         }
     }
 }
