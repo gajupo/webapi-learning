@@ -5,19 +5,16 @@ using webapi_learning.Models.Core;
 
 namespace webapi_learning.Filters
 {
-    public class Shirt_ValidateShirtIdFilterAttribute: ActionFilterAttribute
+    public class Shirt_ValidateShirtIdFilterAsyncAttribute: ActionFilterAttribute
     {
         private readonly IShirtRepository _shirtRepository;
 
-        public Shirt_ValidateShirtIdFilterAttribute(IShirtRepository shirtRepository)
+        public Shirt_ValidateShirtIdFilterAsyncAttribute(IShirtRepository shirtRepository)
         {
             _shirtRepository = shirtRepository;
         }
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            base.OnActionExecuting(context);
-
-            // var shirtRepository = context.HttpContext.RequestServices.GetRequiredService<IShirtRepository>();
 
             var id = context.ActionArguments["id"] as int?;
             if (id.HasValue)
@@ -31,13 +28,18 @@ namespace webapi_learning.Filters
                     };
 
                     context.Result = new BadRequestObjectResult(problemValidationDetail);
-
                 }
                 else
                 {
-                    Shirt? shirt = _shirtRepository.GetShirtById(id).GetAwaiter().GetResult();
+                    Shirt? shirt = await _shirtRepository.GetShirtById(id);
 
-                    if (shirt == null)
+                    if (shirt != null)
+                    {
+                        context.HttpContext.Items["shirt"] = shirt;
+
+                        await next();
+                    }
+                    else
                     {
                         context.ModelState.AddModelError("Shirt", "Shirt Id does not exists");
                         var validationProblemDetails = new ValidationProblemDetails(context.ModelState)
@@ -45,13 +47,7 @@ namespace webapi_learning.Filters
                             Status = StatusCodes.Status404NotFound
                         };
                         context.Result = new NotFoundObjectResult(validationProblemDetails);
-
                     }
-                    else
-                    {
-                        context.HttpContext.Items["shirt"] = shirt;
-                    }
-
                 }
             }
         }

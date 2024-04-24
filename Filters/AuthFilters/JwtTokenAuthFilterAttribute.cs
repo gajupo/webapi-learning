@@ -16,9 +16,15 @@ namespace webapi_learning.Filters.AuthFilters
                 return;
             }
 
-            var configuration = context.HttpContext.RequestServices.GetService<IConfiguration>();
 
-            var claims = Authenticator.VerifyToken(token, configuration?.GetValue<string>("SecretKey") ?? string.Empty);
+            var configuration = context.HttpContext.RequestServices.GetService<IConfiguration>();
+            if (string.IsNullOrEmpty(configuration?.GetValue<string>("SecretKey")))
+            {
+                context.Result = new StatusCodeResult(500); // Internal Server Error for missing configuration
+                return;
+            }
+
+            var claims = Authenticator.VerifyToken(token, configuration.GetValue<string>("SecretKey") ?? string.Empty);
 
             if(claims == null)
             {
@@ -28,7 +34,7 @@ namespace webapi_learning.Filters.AuthFilters
             {
                 var requiredClaims = context.ActionDescriptor.EndpointMetadata.OfType<RequiredClaimAttribute>().ToList();
 
-                if( requiredClaims != null && !requiredClaims.TrueForAll(_ => claims.Any(c => c.Type.ToLower() == _.ClaimType.ToLower() && 
+                if( requiredClaims.Any() && !requiredClaims.TrueForAll(_ => claims.Any(c => c.Type.ToLower() == _.ClaimType.ToLower() && 
                 c.Value.ToLower() == _.ClaimValue.ToLower())))
                 {
                     context.Result = new StatusCodeResult(403);

@@ -33,7 +33,7 @@ namespace webapi_learning.Controller
         }
 
         [HttpGet("{id:int}")]
-        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAsyncAttribute))]
         [RequiredClaimAttribute("read", "true")]
         public async Task<IActionResult> Shirts(int id)
         {
@@ -45,7 +45,7 @@ namespace webapi_learning.Controller
         }
 
         [HttpPost]
-        [TypeFilter(typeof(Shirt_ValidateCreateShirtFilterAttribute))]
+        [TypeFilter(typeof(Shirt_ValidateCreateShirtFilterAttributeAsync))]
         [RequiredClaimAttribute("write", "true")]
         public async Task<IActionResult> AddShirt([FromBody]Shirt shirt)
         {
@@ -64,9 +64,9 @@ namespace webapi_learning.Controller
         }
 
         [HttpPut("{id:int}")]
-        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAsyncAttribute))]
         [Shirt_ValidationUpdateShirt]
-        [TypeFilter(typeof(Shirt_HandleUpdateExceptionFilterAttribute))]
+        [TypeFilter(typeof(Shirt_HandleUpdateExceptionFilterAsyncAttribute))]
         [RequiredClaimAttribute("write", "true")]
         public async Task<IActionResult> UpdateShirt(int id, Shirt shirt)
         {
@@ -76,7 +76,7 @@ namespace webapi_learning.Controller
         }
 
         [HttpDelete("{id:int}")]
-        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAsyncAttribute))]
         [RequiredClaimAttribute("delete", "true")]
         public async Task<IActionResult> DeleteShirt(int id)
         {
